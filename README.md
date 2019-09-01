@@ -1,6 +1,6 @@
 # CmdMgr
 
-# A simple library with 8-bit hash table for procedures.
+A simple library with 8-bit hash table for procedures.
 
 
 
