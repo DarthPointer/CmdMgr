@@ -21,8 +21,10 @@ find(table_name, proc_ptr, keyword, error_flag);
 
 
 
-# To be compiled with gcc (not g++, cpp extension is used just to acces C++ syntax)
+# Notes
 
-# Uses char* as strings, be careful!
+To be compiled with gcc (not g++, cpp extension is used just to acces C++ syntax)
 
-# WIP, new features possible
+Uses char* as strings, be careful!
+
+WIP, new features possible
