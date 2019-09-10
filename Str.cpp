@@ -1,16 +1,16 @@
-void copy(char *&target, char *source, int &err)						//нуль-терминатор не позже чем по индексу 2^16-2!
+void copy(char *&target, char *source, char &err)						//нуль-терминатор не позже чем по индексу 254!
 {																		//1 - слишком длинная исходная строка
 	err = 0;
-	unsigned int i = 0;
+	unsigned char i = 0;
 	char *ps = source;
 	while((*ps)*(!err))
 	{
-		ps++;
-		i++;
 		if(i == 255)
 		{
 			err = 1;
 		}
+		++ps;
+		++i;
 	}
 	if(!err)
 	{
@@ -20,8 +20,8 @@ void copy(char *&target, char *source, int &err)						//нуль-терминатор не позже
 		for(unsigned int j = 0; j < i; j++)
 		{
 			*pt = *ps;
-			pt++;
-			ps++;
+			++pt;
+			++ps;
 		}
 		*pt = 0;
 	}
@@ -41,7 +41,7 @@ void cmp(char *s1, char *s2, bool &result)								//1 - одинаковые
 		{
 			run = 0;
 		}
-		s1++;
-		s2++;
+		++s1;
+		++s2;
 	}
 }

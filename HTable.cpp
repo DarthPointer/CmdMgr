@@ -1,27 +1,27 @@
-#include "str.cpp"
-
 unsigned char hash(char *s)
 {
 	unsigned char h = 0;
 	while (*s)
 	{
 		h += *(unsigned char*)s;
-		s++;
+		++s;
 	}
 	return h;
 }
 
 struct binding
 {
-	void (*fptr)(void*);
+	void *ptr;
 	char *key;
 	binding *next;
+	char *type;
 };
 
 struct HTable
 {
 	binding *(table[256]);
 };
+
 
 void init(HTable &table)
 {
@@ -31,19 +31,30 @@ void init(HTable &table)
 	}
 }
 
-void bind(HTable &table, void (*function)(void*), char *key, int &err)	//Ключ не более 254 символов!
-{																		//1 - слишком длинный ключ
+void bind(HTable &table, void *ref, char *key, char *type, char &err)	//Ключ и имя типа не более 254 символов!
+{																		//1 - слишком длинный ключ/имя типа
 	err = 0;
 	char *p = key;
-	unsigned int i = 0;
+	unsigned char i = 0;
 	while((*p)*(!err))
 	{
-		p++;
-		i++;
 		if(i == 255)
 		{
 			err = 1;
 		}
+		++p;
+		++i;
+	}
+	p = type;
+	i = 0;
+	while((*p)*(!err))
+	{
+		if(i == 255)
+		{
+			err = 1;
+		}
+		++p;
+		++i;
 	}
 	if(!err)
 	{
@@ -65,24 +76,25 @@ void bind(HTable &table, void (*function)(void*), char *key, int &err)	//Ключ не
 			last = table.table[n];
 		}
 		last->next = 0;
-		last->fptr = function;
+		last->ptr = ref;
 		copy(last->key, key, err);
+		copy(last->type, type, err);
 	}
 }
 
-void find(HTable &table, void(*&function)(void*), char *key, int &err)	//1 - слишком длинный ключ
+binding *find(HTable &table, char *key, char &err)						//1 - слишком длинный ключ
 {																		//2 - ключ не найден
 	err = 0;
 	char *p = key;
 	unsigned int i = 0;
 	while((*p)*(!err))
 	{
-		p++;
-		i++;
 		if(i == 255)
 		{
 			err = 1;
 		}
+		++p;
+		++i;
 	}
 	if(!err)
 	{
@@ -96,9 +108,10 @@ void find(HTable &table, void(*&function)(void*), char *key, int &err)	//1 - сли
 			if(b)
 			{
 				err = 0;
-				function = c->fptr;
+				return c;
 			}
 			c = c->next;
 		}
 	}
+	return 0;
 }
