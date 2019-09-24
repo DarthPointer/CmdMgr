@@ -1,27 +1,31 @@
-void *f1(void *b)
+#include "RealFunctions.cpp"
+
+void dupi(void **argv)
 {
-	int *a = (int*)malloc(sizeof(int));
-	*a = 1*(*(int*)b);
-	return a;
+	dup(*(int*)(*argv));
 }
 
-void *f2(void *b)
+void dupd(void **argv)
 {
-	int *a = (int*)malloc(sizeof(int));
-	*a = 2*(*(int*)b);
-	return a;
+	dup(*(double*)(*argv));
 }
 
-class dummy
+void inpi(void **argv)
 {
-	public:
-	void testmethod(int a)
-	{
-		printf("%d", a*5);
-	}
-};
+	input(*(int*)(*argv));
+}
 
-void dummy_tst(dummy &a, int b)
+void inpd(void **argv)
 {
-	a.testmethod(b);
+	input(*(double*)(*argv));
+}
+
+void printi(void **argv)
+{
+	print(*(int*)(*argv));
+}
+
+void printd(void **argv)
+{
+	print(*(double*)(*argv));
 }
